@@ -1,0 +1,13 @@
+[Unit]
+Description=<%= @service %> service
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=<%= @install_path %>
+ExecStart=<%= @install_path %>/current/bin/<%= @service %>
+User=<%= @user %>
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target

@@ -26,17 +26,19 @@ class cerebro (
   $user         = 'cerebro',
   $group        = 'cerebro',
   $service      = 'cerebro',
-  $target_url   = 'http://es-01.example.com:9200',
+  $target_url   = 'http://localhost:9200',
   $target_name  = 'Local Elasticsearch',
 ) {
   require '::archive'
 
-  class { '::java':
-    distribution          => 'jdk',
-    package               => 'jdk1.8.0_73',
-    java_alternative      => 'java',
-    java_alternative_path => '/usr/java/jdk1.8.0_73/jre/bin/java',
-    before                => Service[ $service ],
+  if (!defined('::java')) {
+    class { '::java':
+      distribution          => 'jdk',
+      package               => 'jdk1.8.0_73',
+      java_alternative      => 'java',
+      java_alternative_path => '/usr/java/jdk1.8.0_73/jre/bin/java',
+      before                => Service[ $service ],
+    }
   }
 
   group{ $group:

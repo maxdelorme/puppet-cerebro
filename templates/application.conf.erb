@@ -1,3 +1,5 @@
+# This file is managed by Puppet, any changes will be overwritten
+
 # Secret will be used to sign session cookies, CSRF tokens and for other encryption utilities.
 # It is highly recommended to change this value before running cerebro in production.
 secret = "ki:s:[[@=Ag?QI`W2jMwkY:eqvrJ]JqoJyi2axj3Zv<%= @mac %>"
@@ -19,13 +21,21 @@ data.path = "./cerebro.db"
 
 # Authentication
 auth = {
-  # Example of LDAP authentication
+<%- if @auth_type %>
+  type: <%= @auth_type %>
+    settings: {
+<%- @auth_settings.sort.each do |key,val| %>
+      <%= key %> = "<%= val %>"
+<% end -%>
+    }
+<% end -%>
+  # Example LDAP authentication
   #type: ldap
     #settings: {
-      #url = "ldap://host:port"
-      #base-dn = "ou=active,ou=Employee"
+      #url = "ldap://example.com:389"
+      #base-dn = "OU=Domain Users,DC=example,DC=com"
       #method  = "simple"
-      #user-domain = "domain.com"
+      #user-domain = "example.com"
     #}
   # Example of simple username/password authentication
   #type: basic
@@ -36,11 +46,12 @@ auth = {
 }
 
 # A list of known hosts
-hosts = [
-  {
-    host = "<%= @target_url %>"
-    name = "<%= @target_name %>"
-  },
+hosts = [<%- @targets.sort_by { |v| v['name'] }.each do |target| %>
+{
+    name = "<%= target['name'] %>"
+    host = "<%= target['host'] %>"
+},
+<% end -%>
   # Example of host with authentication
   #{
   #  host = "http://some-authenticated-host:9200"

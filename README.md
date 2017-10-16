@@ -14,70 +14,95 @@
 
 ## Description
 
-Start with a one- or two-sentence summary of what the module does and/or what
-problem it solves. This is your 30-second elevator pitch for your module.
-Consider including OS/Puppet version it works with.
+This is a basic module to install and set up cerebro.
 
-You can give more descriptive information in a second paragraph. This paragraph
-should answer the questions: "What does this module *do*?" and "Why would I use
-it?" If your module has a range of functionality (installation, configuration,
-management, etc.), this is the time to mention it.
+[Cerebro](https://github.com/lmenezes/cerebro) is an open source elasticsearch
+web admin tool built using Scala, Play Framework, AngularJS, and Bootstrap. Cerebro
+is the follow up project to Kopf- a popular elasticsearch web admin plugin.
 
 ## Setup
 
-### What cerebro affects **OPTIONAL**
+### Setup Requirements
 
-If it's obvious what your module touches, you can skip this section. For
-example, folks can probably figure out that your mysql_instance module affects
-their MySQL instances.
-
-If there's more that they should know about, though, this is the place to mention:
-
-* A list of files, packages, services, or operations that the module will alter,
-  impact, or execute.
-* Dependencies that your module automatically installs.
-* Warnings or other important notices.
-
-### Setup Requirements **OPTIONAL**
-
-If your module requires anything extra before setting up (pluginsync enabled,
-etc.), mention it here.
-
-If your most recent release breaks compatibility or requires particular steps
-for upgrading, you might want to include an additional "Upgrading" section
-here.
+Cerebro requires Java 1.8. This module does not attempt to install Java for you.
 
 ### Beginning with cerebro
 
-The very basic steps needed for a user to get the module up and running. This
-can include setup steps, if necessary, or it can be an example of the most
-basic use of the module.
+A basic install will require java and the cerebro module. Cerebro will connect to the local elasticsearch instance by default.
+```puppet
+class { 'java': }
+class { 'cerebro': }
+```
 
-## Usage
+## More Advanced Usage
+### Connecting to multiple clusters
+You can provide specific targets to connect to with an array of hashes:
+```puppet
+class { 'cerebro':
+  targets => [ { name => 'Production Cluster',
+                 host => 'http://prod:9200',
+               },
+               { name => 'Dev Cluster',
+                 host => 'http://dev:9200',
+               }, ]
+}
+```
 
-This section is where you describe how to customize, configure, and do the
-fancy stuff with your module here. It's especially helpful if you include usage
-examples and code samples for doing things with your module.
+Or, through Hiera and Automatic Parameter Lookup:
+```yaml
+cerebro::targets:
+  - name: 'Production Cluster'
+    host: 'http://prod:9200'
+
+  - name: 'Dev Cluster'
+    host: 'http://dev:9200'
+
+```
+### Limiting Access
+You can require login with a basic challenge:
+```puppet
+class { 'cerebro':
+  auth_type     => 'basic',
+  auth_settings => {
+    username => 'admin',
+    password => '1234',
+  }
+}
+```
+Or through LDAP:
+```puppet
+class { 'cerebro':
+  auth_type     => 'basic',
+  auth_settings => {
+    url         => 'ldap://host:port',
+    base-dn     => 'ou=active,ou=Employee',
+    method      => 'simple',
+    user-domain => 'example.com',
+  }
+}
+```
 
 ## Reference
 
-Here, include a complete list of your module's classes, types, providers,
-facts, along with the parameters for each. Users refer to this section (thus
-the name "Reference") to find specific details; most users don't read it per
-se.
+* `version` Parameter: The version of Cerebro to install. Defaults to 0.7.0.
+* `download_url` Parameter: The download url to use. Change this for a local repo. Defaults to "https://github.com/lmenezes/cerebro/releases/download/v${version}/cerebro-${version}.tgz".
+* `install_path` Parameter: The installation path. Defaults to /opt/cerebro.
+* `user` Parameter: The user to run the Cerebro service as. Defaults to cerebro.
+* `group` Parameter: The group for the above user. Defaults to cerebro.
+* `service` Parameter: The service name to run the Cerebro service as. Defaults to cerebro.
+* `targets` Parameter: The elasticsearch endpoints to connect to. Defaults to localhost.
+* `auth_type` Parameter: The authentication method to use. Options are undef, ldap, and basic. Defaults to undef which provides no authentication.
+* `auth_settings` Parameter: Used with ldap and basic authentication types, allows implementation details to be provided.
 
 ## Limitations
 
-This is where you list OS compatibility, version compatibility, etc. If there
-are Known Issues, you might want to include them under their own heading here.
+Only tested with CentOS 7 and Elasticsearch 5 and 2. Authenticated hosts are not currently supported.
 
 ## Development
 
-Since your module is awesome, other users will want to play with it. Let them
-know what the ground rules for contributing are.
+[Issues](https://github.com/mrwulf/puppet-cerebro/issues) are welcome, [pull requests](https://github.com/mrwulf/puppet-cerebro/pulls) are appreciated.
 
-## Release Notes/Contributors/Etc. **Optional**
+## Release Notes
 
-If you aren't using changelog, put your release notes here (though you should
-consider using changelog). You can also add any additional sections you feel
-are necessary or important to include here. Please use the `## ` header.
+### Version 0.1.0
+Initial Release.

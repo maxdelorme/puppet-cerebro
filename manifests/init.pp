@@ -1,7 +1,7 @@
 # Class: cerebro
 # ===========================
 #
-# Install and set up Cerebro.
+# A basic module to install and set up Cerebro.
 #
 # Examples
 # --------
@@ -20,7 +20,7 @@
 # Copyright 2017 Brandon Wulf
 #
 class cerebro (
-  $version       = '0.6.6',
+  $version       = '0.7.0',
   $download_url  = "https://github.com/lmenezes/cerebro/releases/download/v${version}/cerebro-${version}.tgz",
   $install_path  = '/opt/cerebro',
   $user          = 'cerebro',
@@ -65,7 +65,7 @@ class cerebro (
     creates      => "${install_path}/${service}-${version}/bin/${service}",
   }
 
-  -> file{ "$install_path/${service}-${version}":
+  -> file{ "${install_path}/${service}-${version}":
     ensure  => 'directory',
     owner   => $user,
     group   => $group,
@@ -74,8 +74,8 @@ class cerebro (
 
   -> file{ "${install_path}/current":
     ensure => link,
-    owner   => $user,
-    group   => $group,
+    owner  => $user,
+    group  => $group,
     target => "${install_path}/${service}-${version}",
   }
 
@@ -103,8 +103,8 @@ class cerebro (
 
   -> file{ "${install_path}/current/conf/application.conf":
     ensure => link,
-    owner   => $user,
-    group   => $group,
+    owner  => $user,
+    group  => $group,
     target => '/etc/cerebro/application.conf',
   }
 

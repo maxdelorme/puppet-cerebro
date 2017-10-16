@@ -106,6 +106,8 @@ Only tested with CentOS 7 and Elasticsearch 5 and 2. Authenticated hosts are not
 [Issues](https://github.com/mrwulf/puppet-cerebro/issues) are welcome, [pull requests](https://github.com/mrwulf/puppet-cerebro/pulls) are appreciated.
 
 ## Release Notes
+### Version 0.1.1
+Minor documentation updates.
 
 ### Version 0.1.0
 Initial Release.

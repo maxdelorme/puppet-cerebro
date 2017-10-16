@@ -4,13 +4,15 @@
 
 1. [Description](#description)
 1. [Setup - The basics of getting started with cerebro](#setup)
-    * [What cerebro affects](#what-cerebro-affects)
     * [Setup requirements](#setup-requirements)
     * [Beginning with cerebro](#beginning-with-cerebro)
-1. [Usage - Configuration options and additional functionality](#usage)
+1. [More Advanced Usage - Configuration options and additional functionality](#more-advanced-usage)
+    * [Connecting Multiple Clusters](#connecting-multiple-clusters)
+    * [Limiting Access](#limiting-access)
 1. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
 1. [Limitations - OS compatibility, etc.](#limitations)
 1. [Development - Guide for contributing to the module](#development)
+1. [Release Notes](#release-notes)
 
 ## Description
 

@@ -1,4 +1,5 @@
-# cerebro
+# Cerebro
+[![Puppet Forge](https://img.shields.io/puppetforge/v/mrwulf/cerebro.svg?style=flat-square)](https://forge.puppet.com/mrwulf/cerebro)
 
 #### Table of Contents
 

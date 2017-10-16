@@ -1,5 +1,5 @@
 {
-  "name": "cerebro",
+  "name": "mrwulf-cerebro",
   "version": "0.1.0",
   "author": "mrwulf",
   "summary": "Deploy the elasticsearch web admin tool Cerebro",

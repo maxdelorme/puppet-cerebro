@@ -75,7 +75,7 @@ class { 'cerebro':
 Or through LDAP:
 ```puppet
 class { 'cerebro':
-  auth_type     => 'basic',
+  auth_type     => 'ldap',
   auth_settings => {
     url         => 'ldap://host:port',
     base-dn     => 'ou=active,ou=Employee',

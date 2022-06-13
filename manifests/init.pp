@@ -32,6 +32,7 @@ class cerebro (
   } ],
   $auth_type     = undef,
   $auth_settings = undef,
+  $base_path     = '/',
 ) {
   require '::archive'
 
